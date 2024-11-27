@@ -1,0 +1,22 @@
+{% extends 'tasks/base.html' %}
+{% load bootstrap %}
+{% block content %}
+    <div class="content-section">
+        <form>
+            {% csrf_token %}
+            <fieldset class="form-gruop d-flex flex-column gap-3">
+                <legend class="border-bottom mb-4">Join Today</legend>
+                {{ form|bootstrap }}
+            </fieldset>
+            <div class="form-gruop my-3">
+                <button class="btn btn-primary" type="submit">Sing Up</button>
+            </div>
+        </form>
+        <div class="border-top pt-3">
+            <small class="text-muted">
+                Already have an accouant?<a class="ml-2" href="{% url 'login' %}">Sing In Now</a>
+            </small>
+
+        </div>
+    </div>
+{% endblock content %}
