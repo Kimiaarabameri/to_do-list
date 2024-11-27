@@ -1,0 +1,93 @@
+{% extends 'tasks/base.html' %}
+{% block content %}
+<div class="row my-4">
+    <div class="col">
+        <form class="input-group">
+            <button type="submit" class="input-group-text" id="basic-addon1"><i class="bi bi-search"></i></button>
+            <input value="{{ request.GET.search }}" name="search" type="search" placeholder="search..." class="form-control" id="exampleInputEmail1"
+                aria-describedby="emailHelp">
+        </form>
+
+    </div>
+    <div class="col">
+      <div class="input-group dropdown">
+        <span class="input-group-text" id="basic-addon1"><i class="bi bi-funnel"></i></span>
+        <button placeholder="Filter" class="form-control d-flex justify-content-between align-item-center dropdown-toggle" data-bs-toggle="dropdown" aria-expanded="false">Filter</button>
+        <ul class="dropdown-menu">
+            {% if request.GET.completed == '1' %}
+               <a class="dropdown-item" href="/?completed=0">completed</a>
+            {% else %}
+               <a class="dropdown-item" href="/?completed=1">completed</a>
+            {% endif %}
+            <li class="dropdown-divider"></li>
+                <li>
+                    <label for="start-date">Start Date:</label>
+                    <input type="date" id="start-date" class="form-control" />
+                </li>
+                <li class="mt-2">
+                    <label for="end-date">End Date:</label>
+                    <input type="date" id="end-date" class="form-control" />
+                </li>
+                <li class="mt-3">
+                    <button class="btn btn-primary w-100">Apply Filter</button>
+                </li>
+
+        </ul>
+      </div>
+    </div>
+</div>
+
+<div class=" d-flex justify-content-between align-item-center">
+    <h2>Tasks :</h2>
+    <a href="{% url 'new-task' %}" class="btn btn-primary">New Tasks</a>
+</div>
+{% for task in page.object_list %}
+    {% if task.completed %}
+    <div class="card my-2">
+        <div class="card-body d-flex justify-content-between align-item-center">
+            <div class="text-decoration-line-thrugh text-decoration-line-through">
+                {{ task.title }}
+            </div>
+            <div class="d-flex justify-content-between align-item-center gap-3">
+                <a href="{% url 'delete-task' task.id %}" class="text-danger fs-5"><i class="bi bi-trash3"></i></a>
+                <a href="{% url 'edit-task' task.id %}" class="text-secondary fs-5"><i class="bi bi-pencil-square"></i></a>
+                <a href="{% url 'switch-completed' task.id %}" class="text-secondary fs-5"><i class="bi bi-check-square"></i></a>
+            </div>
+        </div>
+    </div>
+    {% else %}
+    <div class="card my-2">
+        <div class="card-body d-flex justify-content-between align-item-center">
+            <div>
+                {{ task.title }}
+            </div>
+            <div class="d-flex justify-content-between align-item-center gap-3">
+                <a href="{% url 'delete-task' task.id %}" class="text-danger fs-5"><i class="bi bi-trash3"></i></a>
+                <a href="{% url 'edit-task' task.id %}" class="text-secondary fs-5"><i class="bi bi-pencil-square"></i></a>
+                <a href="{% url 'switch-completed' task.id %}" class="text-secondary fs-5"><i class="bi bi-square"></i></a>
+    
+            </div>
+        </div>
+    </div>
+
+    {% endif %}
+{% endfor %}
+{% if num_pages > 1 %}
+<nav aria-label="Page navigation example">
+    <ul class="pagination">
+        {% if page.has_previous %}
+        <li class="page-item"><a class="page-link" href="?page={{page.previous_page_number}}" >Previous</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{page.previous_page_number}}">{{ page.previous_page_number }}</a></li>
+        {% endif %}
+     
+        <li class="page-item"><a class="page-link bg-primary text-white" href="?page={{page.number}}">{{ page.number }}</a></li>
+
+
+        {% if page.has_next %}
+        <li class="page-item"><a class="page-link" href="?page={{page.next_page_number}}">{{ page.next_page_number }}</a></li>
+        <li class="page-item"><a class="page-link" href="?page={{page.next_page_number}}" >Next</a></li>
+        {% endif %}
+    </ul>
+</nav>
+{% endif %}
+{% endblock %}

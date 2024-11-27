@@ -1,0 +1,14 @@
+{% extends 'tasks/base.html' %}
+{% load bootstrap %}
+{% block content %}
+<div class="my-5">
+    <h1>Edit Task</h1>
+    <form class="mt-5" method="POST">
+        {% csrf_token %}
+        <div class="d-flex flex-column gap-3">
+            {{ form|bootstrap }}
+        </div>
+        <button class="btn btn-primary mt-3">Submit</button>
+    </form>
+</div>
+{% endblock %}
